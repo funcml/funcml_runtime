@@ -4,7 +4,6 @@ import {
   type Route,
   type RouteParams,
 } from "fml-router";
-import { FMLWithSignal } from "./testingSite/signalTest";
 
 function matchRoute(
   pathname: string,
@@ -47,6 +46,9 @@ if (appRoot) {
 
     const element = route.component(params);
 
+    console.log(element);
+    console.log(typeof element);
+
     if (element instanceof HTMLElement) {
       appRoot.replaceChildren(element); // modern alternative to appendChild
     } else if (typeof element === "string") {
@@ -66,5 +68,4 @@ if (appRoot) {
       appRoot.innerHTML = "<p>404 Not Found</p>";
     }
   }
-  appRoot.appendChild(FMLWithSignal());
 }

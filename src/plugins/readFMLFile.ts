@@ -25,7 +25,7 @@ export function readFMLPlugin(): Plugin {
           .slice(1, rawJsCode.length - 1)
           .trim()
           .replace(/\x1b\[[0-9;]*m/g, "");
-        // console.log(jsCode);
+        console.log(jsCode);
         return `
         import { f } from '@lib'
         ${jsCode} 
