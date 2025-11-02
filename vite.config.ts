@@ -1,11 +1,13 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
-import path from 'path';
+import path from "path";
+import { readFMLPlugin } from "./src/plugins/readFMLFile";
+import { fmlFileRoutePlugin } from "./src/plugins/fmlRoutes";
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@lib': path.resolve(__dirname, './lib/index.ts'),
+      "@lib": path.resolve(__dirname, "./lib/index.ts"),
     },
   },
   test: {
@@ -14,4 +16,5 @@ export default defineConfig({
     include: ["tests/**/*.{test,spec}.{js,ts,jsx,tsx}"],
     globals: true,
   },
+  plugins: [readFMLPlugin(), fmlFileRoutePlugin()],
 });
