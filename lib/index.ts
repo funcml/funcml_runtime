@@ -1,3 +1,2 @@
-export * from "./dom.ts";
-export * from "./signal.ts";
+export * from "../funml/index";
 
