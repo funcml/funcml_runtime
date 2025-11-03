@@ -16,7 +16,7 @@ export function readFMLPlugin(): Plugin {
     load(id) {
       if (id.endsWith(".fml")) {
         const content = readFileSync(id, "utf-8");
-        const rawJsCode = spawnSync("./bin/fml", ["-c", `${content}`], {
+        const rawJsCode = spawnSync("./bin/fml_ubuntu_x64", ["-c", `${content}`], {
           encoding: "utf8", // ← Critical: get string, not Buffer
           stdio: ["ignore", "pipe", "inherit"], // stdin: ignore, stdout: capture, stderr: show
           env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },

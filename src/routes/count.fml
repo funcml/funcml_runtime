@@ -1,0 +1,13 @@
+script (
+        import {createSignal} from "@lib"
+        const [count, setCount] = createSignal(0);
+
+        setInterval(() => setCount((count) => count + 1), 100)
+)
+
+Count => (
+        div (
+                h1 $ [count()],
+                p $ "This is a counter"
+        )
+)
