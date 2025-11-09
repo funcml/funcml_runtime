@@ -1,4 +1,4 @@
-import type { Props, VElement, VNode } from "./types";
+import type { Props, VChild, VElement } from "./types";
 
 type PropInput = Record<string, unknown>;
 
@@ -12,10 +12,10 @@ function isPropsObject(value: unknown): value is PropInput {
   return true;
 }
 
-function normalizeChildren(children: readonly VNode[]): VNode[] {
-  const result: VNode[] = [];
+function normalizeChildren(children: readonly VChild[]): VChild[] {
+  const result: VChild[] = [];
 
-  const push = (child: VNode | undefined | null) => {
+  const push = (child: VChild | undefined | null) => {
     if (child == null) return;
     if (Array.isArray(child)) {
       for (const nested of child) push(nested);
@@ -33,16 +33,16 @@ function normalizeChildren(children: readonly VNode[]): VNode[] {
 
 export function f(
   tag: string,
-  propsOrFirstChild?: PropInput | VNode,
-  ...restChildren: VNode[]
+  propsOrFirstChild?: PropInput | VChild,
+  ...restChildren: VChild[]
 ): VElement {
   let resolvedProps: Props = {} as Props;
-  let children: VNode[] = restChildren;
+  let children: VChild[] = restChildren;
 
   if (isPropsObject(propsOrFirstChild)) {
     resolvedProps = { ...propsOrFirstChild } as Props;
   } else if (propsOrFirstChild !== undefined && propsOrFirstChild !== null) {
-    children = [propsOrFirstChild as VNode, ...restChildren];
+    children = [propsOrFirstChild as VChild, ...restChildren];
   }
 
   return {

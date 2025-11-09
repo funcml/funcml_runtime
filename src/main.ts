@@ -4,7 +4,7 @@ import {
   type Route,
   type RouteParams,
 } from "fml-router";
-import { FMLWithSignal } from "./testingSite/signalTest";
+import { clear, mount, type VChild } from "@lib";
 
 function matchRoute(
   pathname: string,
@@ -36,35 +36,47 @@ function matchRoute(
   return null;
 }
 
+function renderIntoApp(container: HTMLElement, result: unknown) {
+  clear(container);
+
+  if (result instanceof HTMLElement) {
+    container.appendChild(result);
+    return;
+  }
+
+  if (typeof result === "string") {
+    container.textContent = result;
+    return;
+  }
+
+  if (result != null) {
+    mount(result as VChild, container);
+    return;
+  }
+
+  container.textContent = "";
+}
+
 // Main app
 const appRoot = document.getElementById("app");
 if (appRoot) {
   const routes = createRouter();
+  console.log("routes", routes);
   const match = matchRoute(window.location.pathname, routes);
+  console.log("match", match);
 
   if (match) {
     const { route, params } = match;
-
-    const element = route.component(params);
-
-    if (element instanceof HTMLElement) {
-      appRoot.replaceChildren(element); // modern alternative to appendChild
-    } else if (typeof element === "string") {
-      appRoot.innerHTML = element;
-    } else {
-      console.error("Component must return HTMLElement or string");
-    }
+    const result = route.component(params);
+    console.log("route component result", result);
+    renderIntoApp(appRoot, result);
   } else {
     if (notFoundComponent) {
-      const element = notFoundComponent({});
-      if (element instanceof HTMLElement) {
-        appRoot.replaceChildren(element);
-      } else if (typeof element === "string") {
-        appRoot.innerHTML = element;
-      }
+      const result = notFoundComponent({});
+      console.log("not found result", result);
+      renderIntoApp(appRoot, result);
     } else {
-      appRoot.innerHTML = "<p>404 Not Found</p>";
+      renderIntoApp(appRoot, "<p>404 Not Found</p>");
     }
   }
-  appRoot.appendChild(FMLWithSignal());
 }

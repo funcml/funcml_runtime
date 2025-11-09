@@ -1,5 +1,5 @@
 export { f } from "./vdom";
-export { render, mount } from "./render";
+export { render, mount, clear, unmount } from "./render";
 export { fml } from "./funml";
 export { createSignal, effect, createMemo } from "./signal";
-export type { Props, VElement, VNode } from "./types";
+export type { Accessor, ChildValue, Props, VChild, VElement, VNode } from "./types";
