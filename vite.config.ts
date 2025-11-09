@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import path from "path";
 import { readFMLPlugin } from "./src/plugins/readFMLFile";
 import { fmlFileRoutePlugin } from "./src/plugins/fmlRoutes";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   resolve: {
@@ -16,5 +17,5 @@ export default defineConfig({
     include: ["tests/**/*.{test,spec}.{js,ts,jsx,tsx}"],
     globals: true,
   },
-  plugins: [readFMLPlugin(), fmlFileRoutePlugin()],
+  plugins: [readFMLPlugin(), fmlFileRoutePlugin(), tailwindcss()],
 });
