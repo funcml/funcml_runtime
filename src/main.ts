@@ -45,9 +45,8 @@ if (appRoot) {
     const { route, params } = match;
 
     const element = route.component(params);
-
-    console.log(element);
-    console.log(typeof element);
+    // console.log(element);
+    // console.log(typeof element);
 
     if (element instanceof HTMLElement) {
       appRoot.replaceChildren(element); // modern alternative to appendChild
