@@ -1,3 +1,5 @@
+import "./main.css";
+
 import { createRouter, notFoundComponent } from "fml-router";
 import {
   createSignal,
@@ -6,6 +8,7 @@ import {
   f,
   createRouterStore,
   viewAccessorToChild,
+  createStore,
   type VChild,
 } from "@lib";
 
@@ -29,6 +32,24 @@ if (!appRoot) {
   const timer = window.setInterval(() => setNow(new Date()), 1000);
   const time = () => now().toLocaleTimeString();
 
+  const themeStore = createStore({
+    mode: "light" as "light" | "dark",
+    toggleCount: 0,
+  });
+
+  const theme = themeStore.select((state) => state.mode);
+  const toggleCount = themeStore.select((state) => state.toggleCount);
+
+  const toggleTheme = () => {
+    themeStore.update((prev) => ({
+      mode: prev.mode === "light" ? "dark" : "light",
+      toggleCount: prev.toggleCount + 1,
+    }));
+  };
+
+  const themeClass = () =>
+    theme() === "dark" ? "fml-shell theme-dark" : "fml-shell theme-light";
+
   const toPathname = (path: string) =>
     path === "/" || path.startsWith("/") ? path : `/${path}`;
   const navigableRoutes = routes.filter((route) => route.path !== "404");
@@ -39,7 +60,7 @@ if (!appRoot) {
   const App = (): VChild =>
     f(
       "div",
-      { class: "fml-shell" },
+  { class: themeClass },
       f("header", { class: "fml-header" }, [
         f("h1", {}, "FUNML Runtime"),
         f(
@@ -50,8 +71,23 @@ if (!appRoot) {
         f("div", { class: "fml-status" }, [
           f("span", { class: "fml-route" }, "Path: ", pathname),
           f("span", { class: "fml-clock" }, "Time: ", time),
+          f(
+            "button",
+            {
+              type: "button",
+              class: "fml-theme-toggle",
+              onClick: toggleTheme,
+            },
+            () => `Switch to ${theme() === "light" ? "dark" : "light"} mode`,
+          ),
         ]),
       ]),
+      f(
+        "aside",
+        { class: "fml-theme-meta" },
+        f("p", {}, "Current theme: ", () => theme()),
+        f("p", {}, "Toggles: ", () => toggleCount()),
+      ),
       f(
         "nav",
         { class: "fml-nav" },
@@ -84,11 +120,17 @@ if (!appRoot) {
     root = updateRoot(root, App());
   });
 
+  const unsubscribeTheme = themeStore.subscribe(() => {
+    root = updateRoot(root, App());
+  });
+
   if (import.meta.hot) {
     import.meta.hot.dispose(() => {
       unsubscribe();
+      unsubscribeTheme();
       dispose();
       clearInterval(timer);
+      themeStore.destroy();
     });
   }
 }
