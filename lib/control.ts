@@ -56,3 +56,56 @@ export function guard(
 
   return null;
 }
+
+// Clauses describe how the transpiler wants the runtime to loop/filter values.
+export type ComprehensionClause =
+  | {
+      readonly kind: "bind";
+      readonly source: (...scope: readonly unknown[]) => Iterable<unknown> | null | undefined;
+    }
+  | {
+      readonly kind: "filter";
+      readonly when: (...scope: readonly unknown[]) => boolean;
+    };
+
+export interface ComprehensionPlan {
+  readonly clauses: readonly ComprehensionClause[];
+  readonly produce: (...scope: readonly unknown[]) => Resolvable<GuardResult>;
+}
+
+// Walks the clause list depth-first and flattens every emission for the DOM.
+export function comprehension(plan: ComprehensionPlan): GuardResult {
+  const scope: unknown[] = [];
+  const results: ChildUnit[] = [];
+
+  const emit = (value: Resolvable<GuardResult>) => {
+    const resolved = resolve(value);
+    pushValue(resolved, results);
+  };
+
+  const run = (index: number) => {
+    if (index >= plan.clauses.length) {
+      emit(plan.produce(...scope));
+      return;
+    }
+
+    const clause = plan.clauses[index];
+    if (clause.kind === "bind") {
+      const iterable = clause.source(...scope);
+      if (!iterable) return;
+      for (const value of iterable) {
+        scope.push(value);
+        run(index + 1);
+        scope.pop();
+      }
+      return;
+    }
+
+    if (clause.when(...scope)) {
+      run(index + 1);
+    }
+  };
+
+  run(0);
+  return results;
+}
