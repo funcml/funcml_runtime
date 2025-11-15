@@ -1,27 +1,37 @@
 script (
-        import { createSignal } from '@lib';
+        import { createSignal, effect } from '@lib';
 
-        const [todos, setTodos] = createSignal([]);
+        const [todos, setTodos] = createSignal(["Hello world"]);
         console.log("This is from todo app's script section");
-        console.log(todos())
+
+        effect(() => {
+                console.log(todos())
+        })
 
         function addTodos(e) {
                 e.preventDefault();
                 const content = e.target.content.value;
-                console.log(content);
+                setTodos(todos => [content, ...todos]);
+                e.target.reset();
         }
+
 )
 
 Todo => (
         main class="p-4 flex flex-col items-center justify-start gap-4" (
         h1 class="text-center" $ "Todo page",
-        form onsubmit="addTodos(event)" (
+        form onsubmit=[addTodos] (
                 input name="content" class="p-1 border-2  border-black rounded-l-md" (),
                 button class="p-1 border-2 border-l-0 border-black rounded-r-md" $ "Add todo"
         ),
         ul (
-                li $ "To do 1",
-                li $ "To do 2"
+        [() => {
+console.log("Recomputing list:", todos());
+    return todos().map(todo => {
+      console.log("Creating li for:", todo);
+      return f('li', {}, todo);
+    })
+    }]
         )
         )
 )
