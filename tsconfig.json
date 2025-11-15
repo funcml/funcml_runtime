@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "paths": {
       "@lib": ["lib/index.ts"],
+      "@/*": ["src/*"]
     },
 
     /* Bundler mode */
