@@ -1,9 +1,13 @@
 Home => (
         main (
-        h1 $ "Home page",
-        ul (
-                li $ "To do 1",
-                li $ "To do 2"
-        )
+        section class="bg-[#60226d] h-screen flex gap-16 items-center justify-between" (
+                div class="absolute inset-0 z-0" style="background-size: 32px 32px; background-image: linear-gradient(to right, #ba78c2 1px, transparent 1px),linear-gradient(to bottom, #ba78c2 1px, transparent 1px); mask-image: radial-gradient(ellipse 80% 60% at 0% 100%, #000 30%, transparent 90%)" (),
+                div class="z-10 px-16" (
+                                h1 class="text-white text-5xl font-bold mb-4" $ "Functional Markup Language",
+                                p class="text-white text-xl mb-8" $ "Another JS framework? Because, why not?",
+                                a href="/about" class="px-4 py-2 text-lg bg-white rounded-md" $ "About Us" 
+                        ),
+        img src="/main.png" class="h-screen aspect-auto object-cover z-10" ()
+                )
         )
 )

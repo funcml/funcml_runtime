@@ -1,3 +1,29 @@
 About => (
-        h1 $ "About page"
+        main (
+        section class="bg-[#60226d] h-screen" (
+                div class="absolute inset-0 z-0" style="background-size: 32px 32px; background-image: linear-gradient(to right, #ba78c2 1px, transparent 1px),linear-gradient(to bottom, #ba78c2 1px, transparent 1px); mask-image: radial-gradient(ellipse 80% 60% at 0% 100%, #000 30%, transparent 90%)" (),
+                article class="z-10" (
+                h1 class="text-5xl text-center pt-8 pb-4 text-white font-bold" $ "The Creators", 
+                p class="text-white text-xl mb-24 text-center" $ "See the ones crazy enough to do this for s**** and giggles",
+                div class="z-10 px-16 grid grid-cols-1 md:grid-cols-3 gap-8" (
+                        div class="px-4 pt-4 pb-8 border-2 border-[#ba78c2] rounded-sm z-10" (
+                                h1 class="text-white text-2xl font-bold" $ "Maurice Yang",
+                                p class="text-white text-xl mb-8" $ "Da vite plugin guy",
+                                a href="https://github.com/KirantiLoh" class="px-4 py-2 text-lg bg-white rounded-md" $ "Learn more abt him" 
+                        ),
+
+                        div class="px-4 pt-4 pb-8 border-2 border-[#ba78c2] rounded-sm z-10" (
+                                h1 class="text-white text-2xl font-bold" $ "Juan Dharmananda Khusuma",
+                                p class="text-white text-xl mb-8" $ "Da compiler & transpiler guy",
+                                a href="https://github.com/juankhusuma" class="px-4 py-2 text-lg bg-white rounded-md" $ "Learn more abt him" 
+                        ),
+                        div class="px-4 pt-4 pb-8 border-2 border-[#ba78c2] rounded-sm z-10" (
+                                h1 class="text-white text-2xl font-bold" $ "Belati Jagad Syuhada",
+                                p class="text-white text-xl mb-8" $ "Da JS guy",
+                                a href="https://github.com/belatijagad" class="px-4 py-2 text-lg bg-white rounded-md" $ "Learn more abt him" 
+                        )
+                        )
+                )
+        )
+                )
 )

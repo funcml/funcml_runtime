@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@lib": path.resolve(__dirname, "./lib/index.ts"),
+      "@": path.resolve(__dirname, "src"),
     },
   },
   test: {
