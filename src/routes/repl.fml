@@ -5,6 +5,8 @@ import { FMLREPL } from "@/repl/fml-repl";
   const [errorBadge, setErrorBadge] = createSignal(false);
   const [fileName, setFileName] = createSignal("Counter");
 
+  let repl;
+
 effect(() => {
     console.log("Starting codemirror");
     
@@ -17,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Only initialize if all elements exist
     if (editorEl && previewFrameEl && errorBadgeEl && previewErrorEl) {
-      const repl = new FMLREPL({
+      repl = new FMLREPL({
         container: editorEl,
         previewFrame: previewFrameEl,
         errorBadge: errorBadgeEl,
@@ -54,9 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleFileNameChange(e) {
-  console.log(e.target.value)
-        setFileName(e.target.value)
-  }
+        setFileName(e.target.value);
+        if (repl) {
+        repl.renderPreview();
+        }
+      }
 )
 
 Repl => (
@@ -68,7 +72,8 @@ Repl => (
        input 
           id="fileNameInput"
           class="px-4 py-2 bg-white/10 text-white rounded border-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/50"
-          value=[() => fileName()]
+          placeholder="File Name"
+          value=[fileName]
           oninput=[handleFileNameChange]
         (),
         button 
