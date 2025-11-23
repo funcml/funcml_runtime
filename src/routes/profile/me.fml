@@ -1,0 +1,23 @@
+script (
+  import { effect, replaceWith } from "@lib"
+  import { authStore, checkAuth } from "@/stores";
+
+  effect(() => {
+        try {
+                checkAuth();
+        } catch (_) {
+                replaceWith("/profile/login")
+        }
+  })
+
+  const email = authStore.select(state => state.email)
+  
+)
+
+Me => (
+        div class="min-h-screen flex items-center justify-center bg-gray-50" (
+                div class="max-w-md w-full space-y-8 p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg" (
+                h1 class="font-bold" $ [email()]
+        )
+    )
+)
