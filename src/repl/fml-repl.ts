@@ -88,14 +88,7 @@ Counter => (
         <html>
         <head>
           <meta charset="utf-8">
-          <style>
-            body { 
-              margin: 0; 
-              padding: 20px; 
-              font-family: system-ui, sans-serif;
-              background: #f9fafb;
-            }
-          </style>
+          <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         </head>
         <body>
           <div id="app"></div>
