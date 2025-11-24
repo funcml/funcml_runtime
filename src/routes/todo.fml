@@ -1,14 +1,9 @@
 script (
         import { createSignal, effect } from '@lib';
-        import { themeStore, toggleTheme } from "@/stores/theme";
-
-        const theme = themeStore.select((state) => state.mode);
 
         const [todos, setTodos] = createSignal([]);
         console.log("This is from todo app's script section");
-
         effect(() => {
-                console.log(theme())
                 console.log(todos())
         })
 
@@ -24,10 +19,6 @@ script (
 Todo => (
         main class="p-4 flex flex-col items-center justify-start gap-4" (
         h1 class="text-2xl font-semibold text-center" $ "Todo page",
-        header class="flex items-center justify-between gap-24" (
-        p $ [() => `Current theme: ${theme()}`],
-        button onclick=[toggleTheme] class="p-1 border-2 border-black rounded-md" $ "Change Theme"
-        ),
         form onsubmit=[addTodos] (
                 input name="content" class="p-1 border-2  border-black rounded-l-md" (),
                 button class="p-1 border-2 border-l-0 border-black rounded-r-md" $ "Add todo"

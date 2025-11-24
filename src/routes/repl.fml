@@ -1,0 +1,113 @@
+script (
+  import { createSignal, effect } from '@lib';
+import { FMLREPL } from "@/repl/fml-repl";
+  
+  const [errorBadge, setErrorBadge] = createSignal(false);
+  const [fileName, setFileName] = createSignal("Counter");
+
+  let repl;
+
+effect(() => {
+    console.log("Starting codemirror");
+    
+document.addEventListener("DOMContentLoaded", () => {
+    // Get DOM elements
+    const editorEl = document.getElementById("editor");
+    const previewFrameEl = document.getElementById("preview-frame")
+    const errorBadgeEl = document.getElementById("errorBadge");
+    const previewErrorEl = document.getElementById("preview-error");
+
+    // Only initialize if all elements exist
+    if (editorEl && previewFrameEl && errorBadgeEl && previewErrorEl) {
+      repl = new FMLREPL({
+        container: editorEl,
+        previewFrame: previewFrameEl,
+        errorBadge: errorBadgeEl,
+        previewError: previewErrorEl,
+        fileName: fileName,
+      });
+
+      console.log(`fileName: ${repl.fileName}`)
+      
+      // Handle share button
+      const shareBtn = document.getElementById('shareBtn')
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+          const encodedCode = repl.getShareableCode();
+          const url = `${window.location.origin}${window.location.pathname}?code=${encodedCode}`;
+          navigator.clipboard.writeText(url).then(() => {
+            const originalText = shareBtn.textContent;
+            shareBtn.textContent = 'Copied!';
+            setTimeout(() => {
+              shareBtn.textContent = originalText;
+            }, 2000);
+          });
+        });
+      }
+      
+      // Handle URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const encodedCode = urlParams.get('code');
+      if (encodedCode) {
+        repl.loadFromCode(encodedCode);
+      }
+    }
+  });
+  });
+
+  function handleFileNameChange(e) {
+        setFileName(e.target.value);
+        if (repl) {
+        repl.renderPreview();
+        }
+      }
+)
+
+Repl => (
+  div class="min-h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden" (
+    header class="bg-[#60226d] text-white p-4 sm:p-8 text-center" (
+      h1 class="text-2xl sm:text-3xl font-bold mb-2" $ "FML REPL",
+      p class="opacity-90 mb-4" $ "Functional Markup Language Playground",
+      div class="flex gap-4 justify-center flex-wrap" (
+       input 
+          id="fileNameInput"
+          class="px-4 py-2 bg-white/10 text-white rounded border-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/50"
+          placeholder="File Name"
+          value=[fileName]
+          oninput=[handleFileNameChange]
+        (),
+        button 
+          id="shareBtn"
+          class="px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors border-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/50"
+        $ "Share"
+      )
+    ),
+    
+    main class="flex flex-col lg:flex-row h-[calc(100vh-120px)] md:h-[calc(100vh-141px)]" (
+      div class="flex-1 flex flex-col border border-gray-200 overflow-hidden" (
+        div class="p-4 border-b border-gray-200 flex justify-between items-center" (
+          h2 class="text-sm font-semibold text-gray-900" $ "Editor",
+          span 
+            id="errorBadge" 
+            class=[() => errorBadge() ? "bg-red-100 text-red-800 text-xs px-2 py-1 rounded" : "hidden"]
+          $ "Error"
+        ),
+        div id="editor" class="flex-1 bg-[#282c34] h-full" ()
+      ),
+      
+      div class="flex-1 flex flex-col border border-gray-200 overflow-hidden" (
+        div class="p-4 border-b border-gray-200" (
+          h2 class="text-sm font-semibold text-gray-900" $ "Preview"
+        ),
+        div id="preview" class="flex-1 overflow-hidden" (
+        iframe 
+          id="preview-frame"
+          class="flex-1 w-full border-0"
+          sandbox="allow-scripts allow-same-origin"
+        (),
+          div id="preview-error" class="p-4 bg-red-50 text-red-700 font-mono whitespace-pre-wrap hidden" ()
+        )
+      )
+    )
+  )
+)
