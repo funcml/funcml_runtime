@@ -8,6 +8,50 @@ export function f(
   propsOrFirstChild?: Props | Child,
   ...children: Child[]
 ) {
+  function appendChildren(
+    parent: DocumentFragment | HTMLElement,
+    children: Child[],
+  ) {
+    for (const child of children) {
+      if (child == null) continue;
+
+      if (typeof child === "string" || typeof child === "number") {
+        parent.appendChild(document.createTextNode(String(child)));
+      } else if (child instanceof Node) {
+        parent.appendChild(child);
+      } else if (typeof child === "function") {
+        // Nested reactive function - use same comment placeholder approach
+        const placeholder = document.createComment("nested-reactive");
+        parent.appendChild(placeholder);
+
+        effect(() => {
+          const result = child();
+          const newChildren = Array.isArray(result) ? result : [result];
+
+          const fragment = document.createDocumentFragment();
+          for (const newChild of newChildren) {
+            if (newChild instanceof Node) {
+              fragment.appendChild(newChild);
+            } else if (
+              typeof newChild === "string" ||
+              typeof newChild === "number"
+            ) {
+              fragment.appendChild(document.createTextNode(String(newChild)));
+            }
+          }
+
+          let nextSibling = placeholder.nextSibling;
+          while (nextSibling && nextSibling.nodeType !== Node.COMMENT_NODE) {
+            const toRemove = nextSibling;
+            nextSibling = nextSibling.nextSibling;
+            toRemove.parentNode?.removeChild(toRemove);
+          }
+
+          placeholder.parentNode?.insertBefore(fragment, nextSibling);
+        });
+      }
+    }
+  }
   const element = document.createElement(tagName);
   let allChildren: Child[] = children ?? [];
 
@@ -83,49 +127,4 @@ export function f(
   }
 
   return element;
-}
-
-function appendChildren(
-  parent: DocumentFragment | HTMLElement,
-  children: Child[],
-) {
-  for (const child of children) {
-    if (child == null) continue;
-
-    if (typeof child === "string" || typeof child === "number") {
-      parent.appendChild(document.createTextNode(String(child)));
-    } else if (child instanceof Node) {
-      parent.appendChild(child);
-    } else if (typeof child === "function") {
-      // Nested reactive function - use same comment placeholder approach
-      const placeholder = document.createComment("nested-reactive");
-      parent.appendChild(placeholder);
-
-      effect(() => {
-        const result = child();
-        const newChildren = Array.isArray(result) ? result : [result];
-
-        const fragment = document.createDocumentFragment();
-        for (const newChild of newChildren) {
-          if (newChild instanceof Node) {
-            fragment.appendChild(newChild);
-          } else if (
-            typeof newChild === "string" ||
-            typeof newChild === "number"
-          ) {
-            fragment.appendChild(document.createTextNode(String(newChild)));
-          }
-        }
-
-        let nextSibling = placeholder.nextSibling;
-        while (nextSibling && nextSibling.nodeType !== Node.COMMENT_NODE) {
-          const toRemove = nextSibling;
-          nextSibling = nextSibling.nextSibling;
-          toRemove.parentNode?.removeChild(toRemove);
-        }
-
-        placeholder.parentNode?.insertBefore(fragment, nextSibling);
-      });
-    }
-  }
 }

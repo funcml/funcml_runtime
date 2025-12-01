@@ -2,15 +2,17 @@ script (
         import { createSignal, effect } from '@lib';
 
         const [todos, setTodos] = createSignal([]);
+const [content, setContent] = createSignal("");
         console.log("This is from todo app's script section");
         effect(() => {
                 console.log(todos())
+          console.log(content())
         })
 
         function addTodos(e) {
                 e.preventDefault();
-                const content = e.target.content.value;
-                setTodos(todos => [content, ...todos]);
+          console.log("Adding")
+                setTodos(todos => [content(), ...todos]);
                 e.target.reset();
         }
 
@@ -19,15 +21,17 @@ script (
 Todo => (
         main class="p-4 flex flex-col items-center justify-start gap-4" (
         h1 class="text-2xl font-semibold text-center" $ "Todo page",
-        form onsubmit=[addTodos] (
-                input name="content" class="p-1 border-2  border-black rounded-l-md" (),
-                button class="p-1 border-2 border-l-0 border-black rounded-r-md" $ "Add todo"
+        form (
+                input name="content" 
+          value=[() => content()] oninput=[e => setContent(e.target.value)]
+          class="p-1 border-2  border-black rounded-l-md" (),
+                button onclick=[addTodos] class="p-1 border-2 border-l-0 border-black rounded-r-md" $ "Add todo"
         ),
         h2 class="" $ "todos:",
         ul (
-        [() => {
-                return todos().length > 0 ? todos().map(todo => f('li', {}, todo)) : "No todos..." 
-        }]
+        [() => todos().length > 0 ? todos().map(todo => f('li', {}, todo)) : "No todos..." 
+        ]
         )
         )
 )
+

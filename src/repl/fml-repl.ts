@@ -3,6 +3,17 @@ import { EditorView, keymap } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { javascript } from "@codemirror/lang-javascript";
+import * as FMLRuntime from "@lib";
+
+function runtimeToString(): string {
+  return `
+    const createSignal = ${FMLRuntime.createSignal.toString()};
+    const f = ${FMLRuntime.f.toString()};
+    const createStore = ${FMLRuntime.createStore.toString()};
+    const effect = ${FMLRuntime.effect.toString()};
+    const createMemo = ${FMLRuntime.createMemo.toString()};
+  `;
+}
 
 interface FMLREPLConfig {
   container: HTMLElement;
@@ -55,8 +66,6 @@ export class FMLREPL {
 
   private getDefaultCode(): string {
     return `script (
-  import { createSignal } from '@lib';
-  
   const [count, setCount] = createSignal(0);
 )
 
@@ -93,7 +102,30 @@ Counter => (
         <body>
           <div id="app"></div>
           <script type="module">
-                import { f } from "/lib/index"
+let currentTracker= null;
+const taskQueue = new Set();
+let flushing = false;
+
+function flush() {
+  for (const sub of Array.from(taskQueue)) {
+    taskQueue.delete(sub);
+    try {
+      sub.run();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  flushing = false;
+}
+
+function schedule(sub) {
+  taskQueue.add(sub);
+  if (!flushing) {
+    flushing = true;
+    queueMicrotask(flush);
+  }
+}
+                ${runtimeToString()}
               ${transpiledCode}
               
               // Mount the component

@@ -27,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fileName: fileName,
       });
 
-      console.log(`fileName: ${repl.fileName}`)
-      
       // Handle share button
       const shareBtn = document.getElementById('shareBtn')
       if (shareBtn) {
@@ -100,11 +98,11 @@ Repl => (
           h2 class="text-sm font-semibold text-gray-900" $ "Preview"
         ),
         div id="preview" class="flex-1 overflow-hidden" (
-        iframe 
-          id="preview-frame"
-          class="flex-1 w-full border-0"
-          sandbox="allow-scripts allow-same-origin"
-        (),
+        [() => f("iframe", {
+          id:"preview-frame",
+          className:"flex-1 w-full border-0",
+          sandbox:"allow-scripts allow-same-origin",
+          })],
           div id="preview-error" class="p-4 bg-red-50 text-red-700 font-mono whitespace-pre-wrap hidden" ()
         )
       )
