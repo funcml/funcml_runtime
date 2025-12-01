@@ -24,6 +24,10 @@ pnpm install
 pnpm dev
 ```
 
+## How to use?
+
+Lihat [FML syntax guide](./docs.md) untuk pengenalan fitur dan cara menulis dalam satu file, reactivity primitive, dan routing convention.
+
 ## 📚 Lesson Learnt
 
 #### Higher Order Function Composition & Transformation Pipelines
