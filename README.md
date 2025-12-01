@@ -25,13 +25,10 @@ pnpm dev
 ```
 
 ## 📚 Lesson Learnt
-### 1.  Week 1
 
 #### Higher Order Function Composition & Transformation Pipelines
 
 Untuk melakukan transpilasi dari kode funcml → kode js, kita dapat menggunakan komposisi dari berbagai higher order function yang memuat langkah-langkah transformasi kode funcml ke js
-
-### 2. Week 2
 
 #### Fine-Grained Reactivity
 
@@ -41,7 +38,6 @@ FML mengimplementasikan fine-grained reactivity menggunakan signals, yaitu pasan
 - Saat getter dipanggil dalam efek (effect) atau komponen, sistem secara otomatis mencatat dependensi tersebut.  
 - Ketika setter dipanggil, hanya efek atau tampilan yang bergantung pada sinyal tersebut yang dijalankan ulang — tidak ada re-render berlebihan.
 
-### 3.  Week 3
 
 #### Approach Frontend Framework:
 
@@ -62,7 +58,6 @@ FML mengimplementasikan fine-grained reactivity menggunakan signals, yaitu pasan
           3. Initial load dan Time-to-Interactive yang lebih cepat
       - Kekurangan
           1. Deklarasi UI yang lebih restriktif karena tidak semua expression disupport
-### 4.  Week 4
 
 #### Alasan Munculnya Frontend Framework:
 
