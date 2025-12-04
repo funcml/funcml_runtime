@@ -79,20 +79,17 @@ tag attribute="value" attribute=[expression] (
 - Event handler memakai penamaan DOM standar: `onclick`, `oninput`, `onsubmit`, dll. Kaitkan dengan tanda kurung siku, misal `onsubmit=[handleLogin]`.
 - Atribut boolean (seperti `required`) bisa ditulis `required="true"` atau diikat ke ekspresi.
 
-## Node Teks dengan `$`
+## Komposisi Elemen dengan `$`
 
-Gunakan `$` untuk menempelkan teks pada elemen:
+Gunakan `$` untuk mengkomposisi kan elemen dengan elemen lain:
 
 ```fml
 p class="text-lg" $ "Teks biasa"
 h1 class="font-bold" $ [email()]
+h1 class="text-lg" $ a href="/" $ "To index"
 ```
 
-- `$ "literal"` menyisipkan teks statis.
-- `$ [expression]` merender nilai dinamis (signal, hasil selector store, dll.).
-- `$` dapat muncul di antara anak lain jika Anda perlu mencampur teks dan elemen.
-
-## List Comprehension dan Flow Control
+## Dynamic Block dan Flow Control
 
 Ekspresi bebas dapat ditempatkan di mana saja dengan membungkusnya menggunakan kurung siku. Untuk bagian reaktif, letakkan ekspresi di dalam fungsi sehingga FML dapat menjalankannya ulang ketika dependensi berubah:
 
@@ -112,6 +109,28 @@ Pola umum:
 - `[() => expression]` → evaluasi tangguh yang akan dijalankan ulang saat signal di dalamnya berubah.
 - Gunakan helper rendah-level `f(tag, props?, ...children)` ketika perlu membuat anak secara imperatif, misalnya saat melakukan `map`.
 
+## Guard
+
+Guard juga bisa digunakan untuk me-render suatu elemen yang memenuhi kondisi tertentu dengan menggunakan `@if`, `@elif`, dan `@else`.
+
+```fml
+GuardDemo => (
+  div (
+    @if a > 3 then
+        (h1 $ h2 (
+            "Hellow",
+            iframe
+        ))
+    @elif b then
+       (h1 $ "Hi")
+    @else then
+        (h1 $ "Howdy!")
+    @end if
+  )
+)
+
+```
+
 ## Mengikat Atribut
 
 Setiap atribut dapat dibuat reaktif:
@@ -129,6 +148,18 @@ span class=[() => errorBadge() ? "bg-red-100" : "hidden"] ()
 - Nilai primitif (`string`, `number`, `boolean`) bisa langsung dipakai.
 - Event menerima fungsi penuh: `onclick=[handleClick]`.
 - Karena atribut pada akhirnya hanya props, Anda juga bisa melakukan spread objek di dalam ekspresi (`{...props}`) jika memang diperlukan.
+
+## List Comprehension
+
+Untuk me-render elemen dalam suatu list dengan ringkas, bisa menggunakan list comprehension dengan notasi berikut.
+
+```fml
+A => (ul $ @[
+    li x=[1] $ [title], 
+    {title, desc} <- todos(), 
+    title.isLower()
+])
+```
 
 ## Primitif Reaktivitas
 
