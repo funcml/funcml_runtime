@@ -1,6 +1,7 @@
-# Funcml Runtime
+# (Fun)cml Runtime
 
-![Funcml logo (Haskell Curry)](./public/main.png)
+<img src="./public/main.png" alt="funml" width="200"/>
+
 
 This repository hosts the necessary runtime component for running the funcml mini framework.
 
@@ -88,7 +89,7 @@ Implementasi fine-grained reactivity melalui createSignal dalam FML sangat sesua
 
 #### Approach Frontend Framework:
 
-    1. HTML-in-JS
+  1. HTML-in-JS
         - Karakteristik: Semuanya berupa function javascript
         - Kelebihan:
             1. Type safety yang seamless dan complete
@@ -97,7 +98,7 @@ Implementasi fine-grained reactivity melalui createSignal dalam FML sangat sesua
         - Kekurangan
             1. Bundle size yang lebih besar
             2. SEO dan accessibility yang buruk
-    2. JS-in-HTML
+  2. JS-in-HTML
       - Karakteristik: Biasanya extensi dari HTML
       - Kelebihan
           1. Pemisahan yang jelas antara deklarasi UI dan business logic
@@ -108,13 +109,13 @@ Implementasi fine-grained reactivity melalui createSignal dalam FML sangat sesua
 
 #### Alasan Munculnya Frontend Framework:
 
-    Setelah mencoba membuat framework sendiri, terdapat beberapa pain points dalam development frontend yang telah dicoba disolve oleh existing framework, yakni:
+Setelah mencoba membuat framework sendiri, terdapat beberapa pain points dalam development frontend yang telah dicoba disolve oleh existing framework, yakni:
         - DOM Manipulation
         - Persisting state across pages
         - Routing tanpa trigger page refresh
-    Frontend framework mengabstraksi hal tersebut sehingga developer dapat fokus dalam membangun UI yang nyaman digunakan tanpa mengurangi developer existence.
+Frontend framework mengabstraksi hal tersebut sehingga developer dapat fokus dalam membangun UI yang nyaman digunakan tanpa mengurangi developer existence.
 
-    Kami menggunakan approach hybrid, menggunakan concept “everything-is-a-function” seperti React tetapi design language seperti Svelte yang memanfaatkan compiler/transpiler. Dengan approach ini kami rasa merupakan solusi yang dapat memanfaatkan keuntungan dari kedua approach dan meminimalisir kekurangan dari kedua approach
+Kami menggunakan approach hybrid, menggunakan concept “everything-is-a-function” seperti React tetapi design language seperti Svelte yang memanfaatkan compiler/transpiler. Dengan approach ini kami rasa merupakan solusi yang dapat memanfaatkan keuntungan dari kedua approach dan meminimalisir kekurangan dari kedua approach
 
 
 
