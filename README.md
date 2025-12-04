@@ -110,9 +110,9 @@ Implementasi fine-grained reactivity melalui createSignal dalam FML sangat sesua
 #### Alasan Munculnya Frontend Framework:
 
 Setelah mencoba membuat framework sendiri, terdapat beberapa pain points dalam development frontend yang telah dicoba disolve oleh existing framework, yakni:
-        - DOM Manipulation
-        - Persisting state across pages
-        - Routing tanpa trigger page refresh
+- DOM Manipulation
+- Persisting state across pages
+- Routing tanpa trigger page refresh
 Frontend framework mengabstraksi hal tersebut sehingga developer dapat fokus dalam membangun UI yang nyaman digunakan tanpa mengurangi developer existence.
 
 Kami menggunakan approach hybrid, menggunakan concept “everything-is-a-function” seperti React tetapi design language seperti Svelte yang memanfaatkan compiler/transpiler. Dengan approach ini kami rasa merupakan solusi yang dapat memanfaatkan keuntungan dari kedua approach dan meminimalisir kekurangan dari kedua approach
